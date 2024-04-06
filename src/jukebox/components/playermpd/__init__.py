@@ -357,6 +357,9 @@ class PlayerMPD:
     @plugs.tag
     def prev(self):
         logger.debug("Prev")
+        if self.mpd_status['state'] in ('stop', 'pause'):
+            logger.debug("Refusing action in stopped/paused state")
+            return
         if self.mpd_status['state'] == 'stop':
             logger.debug('Player is stopped, calling stopped_prev_action')
             return self.stopped_prev_action()
@@ -378,6 +381,9 @@ class PlayerMPD:
     def next(self):
         """Play next track in current playlist"""
         logger.debug("Next")
+        if self.mpd_status['state'] in ('stop', 'pause'):
+            logger.debug("Refusing action in stopped/paused state")
+            return
         if self.mpd_status['state'] == 'stop':
             logger.debug('Player is stopped, calling stopped_next_action')
             return self.stopped_next_action()
